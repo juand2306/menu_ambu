@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ambú Café — Sabores que conectan momentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #F5EDD8;
+    --parchment: #EDE0C4;
+    --dark-brown: #1A0E06;
+    --espresso: #2C1810;
+    --roast: #4A2C1A;
+    --caramel: #8B5E3C;
+    --gold: #C9963A;
+    --gold-light: #E8B96A;
+    --green-leaf: #2D4A2A;
+    --green-moss: #4A7A40;
+    --mountain-blue: #1E3A5F;
+    --white-milk: #FFF8F0;
+    --text-dark: #1A0E06;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+
+  body {
+    background: var(--dark-brown);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── GRAIN OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.35;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 30%, #3D1F0A 0%, #1A0E06 60%, #0D0703 100%);
+  }
+
+  .hero-bg-mountains {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpolygon points='0,400 150,120 280,260 380,60 500,200 650,90 800,280 800,400' fill='%23C9963A'/%3E%3Cpolygon points='0,400 100,180 220,300 350,100 480,230 600,130 750,320 800,400' fill='%238B5E3C' opacity='0.6'/%3E%3C/svg%3E") center bottom / cover no-repeat;
+  }
+
+  /* Floating particles */
+  .particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    animation: floatParticle var(--dur, 8s) var(--delay, 0s) ease-in-out infinite;
+  }
+
+  @keyframes floatParticle {
+    0% { opacity: 0; transform: translateY(100vh) rotate(0deg) scale(0); }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-20vh) rotate(720deg) scale(1.5); }
+  }
+
+  /* 3D COFFEE CUP */
+  .hero-3d-scene {
+    width: 200px;
+    height: 200px;
+    perspective: 800px;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .coffee-cup-wrapper {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: rotateCup 12s linear infinite;
+    position: relative;
+  }
+
+  @keyframes rotateCup {
+    0% { transform: rotateY(0deg) rotateX(10deg); }
+    50% { transform: rotateY(180deg) rotateX(-5deg); }
+    100% { transform: rotateY(360deg) rotateX(10deg); }
+  }
+
+  .cup-svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 20px 40px rgba(201,150,58,0.4));
+  }
+
+  .steam-line {
+    position: absolute;
+    top: 10px;
+    width: 3px;
+    border-radius: 4px;
+    background: linear-gradient(to top, transparent, rgba(255,255,255,0.6), transparent);
+    animation: steamRise 2s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+
+  .steam-line:nth-child(1) { left: 68px; height: 30px; animation-delay: 0s; }
+  .steam-line:nth-child(2) { left: 82px; height: 45px; animation-delay: 0.3s; }
+  .steam-line:nth-child(3) { left: 96px; height: 35px; animation-delay: 0.6s; }
+  .steam-line:nth-child(4) { left: 110px; height: 40px; animation-delay: 0.9s; }
+
+  @keyframes steamRise {
+    0% { opacity: 0; transform: translateY(0) scaleX(1); }
+    30% { opacity: 1; }
+    70% { opacity: 0.5; }
+    100% { opacity: 0; transform: translateY(-40px) scaleX(2); }
+  }
+
+  .hero-badge {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    color: var(--dark-brown);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideDown 1s ease 0.3s both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 15vw, 5.5rem);
+    font-weight: 900;
+    line-height: 0.9;
+    text-align: center;
+    letter-spacing: -0.02em;
+    animation: fadeSlideUp 1s ease 0.5s both;
+    position: relative;
+  }
+
+  .hero-title span.accent {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    color: var(--caramel);
+    margin-top: 0.8rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    animation: fadeSlideUp 1s ease 0.7s both;
+  }
+
+  .hero-scroll-cta {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fadeSlideUp 1s ease 1.2s both;
+    cursor: pointer;
+  }
+
+  .hero-scroll-cta span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .scroll-arrow {
+    width: 24px;
+    height: 24px;
+    border-right: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    transform: rotate(45deg);
+    animation: bounceArrow 1.5s ease infinite;
+  }
+
+  @keyframes bounceArrow {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(6px); }
+  }
+
+  .hero-decorline {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 1.2rem auto;
+  }
+
+  /* ─── FLOATING BEANS ─── */
+  .floating-beans {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .bean {
+    position: absolute;
+    opacity: 0.15;
+    animation: beanFloat var(--d, 10s) var(--dl, 0s) ease-in-out infinite alternate;
+  }
+
+  @keyframes beanFloat {
+    0% { transform: translateY(0) rotate(0deg) scale(1); }
+    100% { transform: translateY(-30px) rotate(30deg) scale(1.1); }
+  }
+
+  /* ─── NAV TABS ─── */
+  .nav-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(26,14,6,0.98), rgba(26,14,6,0.95));
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,150,58,0.2);
+    padding: 12px 0 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .nav-sticky::-webkit-scrollbar { display: none; }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 16px 12px;
+    min-width: max-content;
+  }
+
+  .nav-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    background: rgba(255,255,255,0.03);
+    white-space: nowrap;
+    min-width: 80px;
+  }
+
+  .nav-tab .tab-icon { font-size: 1.2rem; }
+
+  .nav-tab .tab-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--caramel);
+    transition: color 0.3s;
+  }
+
+  .nav-tab.active, .nav-tab:hover {
+    background: rgba(201,150,58,0.12);
+    border-color: rgba(201,150,58,0.4);
+  }
+
+  .nav-tab.active .tab-label, .nav-tab:hover .tab-label {
+    color: var(--gold);
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    padding: 60px 20px 40px;
+    position: relative;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .section-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--cream);
+  }
+
+  .section-title em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px auto 0;
+    width: 160px;
+  }
+
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+
+  .section-divider::after {
+    background: linear-gradient(to left, transparent, var(--gold));
+  }
+
+  .section-divider-icon { font-size: 0.9rem; }
+
+  /* ─── DRINK CARDS ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .drink-card {
+    background: linear-gradient(135deg, rgba(44,24,16,0.8) 0%, rgba(26,14,6,0.9) 100%);
+    border: 1px solid rgba(201,150,58,0.15);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .drink-card.visible {
+    animation: cardReveal 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .drink-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,150,58,0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .drink-card:active::before { opacity: 1; }
+
+  .drink-card:active {
+    transform: scale(0.98);
+    border-color: rgba(201,150,58,0.4);
+    box-shadow: 0 8px 32px rgba(201,150,58,0.15);
+  }
+
+  .drink-info { flex: 1; }
+
+  .drink-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .drink-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    color: rgba(197,166,118,0.7);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .drink-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-top: 6px;
+  }
+
+  .badge-hot { background: rgba(180,60,20,0.2); color: #E07050; border: 1px solid rgba(180,60,20,0.3); }
+  .badge-cold { background: rgba(30,100,150,0.2); color: #70B8E0; border: 1px solid rgba(30,100,150,0.3); }
+  .badge-alcohol { background: rgba(120,20,100,0.2); color: #D070B8; border: 1px solid rgba(120,20,100,0.3); }
+  .badge-food { background: rgba(80,120,30,0.2); color: #90C050; border: 1px solid rgba(80,120,30,0.3); }
+  .badge-beer { background: rgba(160,120,20,0.2); color: #D4A020; border: 1px solid rgba(160,120,20,0.3); }
+
+  .drink-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold);
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .drink-price small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    color: var(--caramel);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  /* ─── HIGHLIGHT CARD (special) ─── */
+  .drink-card.special {
+    background: linear-gradient(135deg, rgba(100,60,20,0.5) 0%, rgba(44,24,16,0.95) 100%);
+    border-color: rgba(201,150,58,0.4);
+  }
+
+  .drink-card.special .drink-name { color: var(--gold-light); }
+
+  /* ─── SECTION BG ─── */
+  .section-bebidas-calientes { background: radial-gradient(ellipse at 80% 50%, rgba(60,20,8,0.3) 0%, transparent 70%); }
+  .section-bebidas-frias { background: radial-gradient(ellipse at 20% 50%, rgba(8,30,60,0.3) 0%, transparent 70%); }
+  .section-acompañamientos { background: radial-gradient(ellipse at 60% 30%, rgba(30,60,15,0.25) 0%, transparent 70%); }
+  .section-cervezas { background: radial-gradient(ellipse at 40% 70%, rgba(80,50,10,0.3) 0%, transparent 70%); }
+
+  /* ─── AMBIENT DIVIDERS ─── */
+  .ambient-divider {
+    height: 2px;
+    background: linear-gradient(to right, transparent 0%, rgba(201,150,58,0.3) 20%, rgba(201,150,58,0.6) 50%, rgba(201,150,58,0.3) 80%, transparent 100%);
+    margin: 0;
+    position: relative;
+  }
+
+  .ambient-divider::after {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--dark-brown);
+    padding: 0 12px;
+    color: var(--gold);
+    font-size: 0.7rem;
+  }
+
+  /* ─── INGREDIENTS POPUP ─── */
+  .ingredient-pill {
+    display: inline-block;
+    background: rgba(201,150,58,0.1);
+    border: 1px solid rgba(201,150,58,0.2);
+    border-radius: 100px;
+    padding: 2px 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.45rem;
+    color: var(--caramel);
+    letter-spacing: 0.05em;
+    margin: 2px 2px 0 0;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    background: var(--espresso);
+    padding: 60px 24px 40px;
+    text-align: center;
+    border-top: 1px solid rgba(201,150,58,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,150,58,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--caramel);
+    font-size: 1rem;
+    margin-bottom: 24px;
+  }
+
+  .footer-motto {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+
+  .motto-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,150,58,0.3);
+    padding: 8px 16px;
+    border-radius: 100px;
+  }
+
+  .footer-coffee-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    display: block;
+    animation: gentlePulse 3s ease infinite;
+  }
+
+  @keyframes gentlePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+
+  /* ─── KEYFRAMES SHARED ─── */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── PRODUCT IMAGE ─── */
+  .drink-card {
+    /* override to vertical layout when image present */
+  }
+
+  .drink-img-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    background: rgba(44,24,16,0.6);
+    border: 1px solid rgba(201,150,58,0.15);
+  }
+
+  .drink-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 13px;
+    display: block;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 0;
+  }
+
+  .drink-img-wrap img.loaded {
+    opacity: 1;
+  }
+
+  .drink-img-wrap:active img { transform: scale(1.06); }
+
+  /* Shimmer placeholder */
+  .img-placeholder {
+    position: absolute;
+    inset: 0;
+    border-radius: 13px;
+    background: linear-gradient(
+      110deg,
+      rgba(44,24,16,0.7) 25%,
+      rgba(80,44,24,0.5) 50%,
+      rgba(44,24,16,0.7) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease;
+  }
+
+  .img-placeholder.hidden { opacity: 0; pointer-events: none; }
+
+  .placeholder-icon {
+    font-size: 1.6rem;
+    opacity: 0.35;
+    animation: placeholderPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  @keyframes placeholderPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.08); }
+  }
+
+  /* ─── PRICE HIGHLIGHT ─── */
+  .price-special {
+    position: relative;
+    display: inline-block;
+  }
+
+  .price-special::after {
+    content: 'popular';
+    position: absolute;
+    top: -8px;
+    right: -6px;
+    font-size: 0.35rem;
+    background: var(--gold);
+    color: var(--dark-brown);
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* ─── BACK TO TOP ─── */
+  .back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background: var(--gold);
+    color: var(--dark-brown);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 24px rgba(201,150,58,0.4);
+    border: none;
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── LEAF DECORATOR ─── */
+  .leaf-deco {
+    position: absolute;
+    opacity: 0.06;
+    pointer-events: none;
+    font-size: 5rem;
+    animation: leafSway 6s ease-in-out infinite;
+  }
+
+  @keyframes leafSway {
+    0%, 100% { transform: rotate(-5deg) scale(1); }
+    50% { transform: rotate(5deg) scale(1.05); }
+  }
+
+  /* ─── ROTATING 3D BEAN ─── */
+  .rotating-bean {
+    width: 60px;
+    height: 60px;
+    perspective: 400px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  .bean-inner {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: spinBean 8s linear infinite;
+  }
+
+  @keyframes spinBean {
+    0% { transform: rotateY(0deg) rotateX(20deg); }
+    100% { transform: rotateY(360deg) rotateX(20deg); }
+  }
+
+  /* ─── PARALLAX TEXT BAND ─── */
+  .marquee-band {
+    background: var(--gold);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-inner {
+    display: inline-flex;
+    animation: marqueeScroll 20s linear infinite;
+  }
+
+  .marquee-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dark-brown);
+    padding: 0 24px;
+  }
+
+  .marquee-item::after { content: ' ✦ '; }
+
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ─── MOBILE RESPONSIVE ─── */
+  @media (max-width: 380px) {
+    .hero-title { font-size: 3rem; }
+    .nav-tab { min-width: 70px; padding: 8px 12px; }
+    .drink-card { padding: 14px 16px; }
+  }
+
+  @media (min-width: 480px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ══════════════════════════════════════
+     PRODUCT MODAL
+  ══════════════════════════════════════ */
+
+  /* Cursor hint on cards */
+  .drink-card { cursor: pointer; }
+  .drink-card:hover {
+    border-color: rgba(201,150,58,0.35);
+    box-shadow: 0 4px 24px rgba(201,150,58,0.1);
+    transform: translateY(-1px);
+    transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  /* ── Backdrop ── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,5,2,0.88);
+    backdrop-filter: blur(16px) saturate(0.6);
+    -webkit-backdrop-filter: blur(16px) saturate(0.6);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .modal-backdrop.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── Sheet ── */
+  .modal-sheet {
+    width: 100%;
+    max-width: 520px;
+    max-height: 92dvh;
+    background: linear-gradient(160deg, #2C1A0C 0%, #1A0E06 50%, #0F0804 100%);
+    border-radius: 28px 28px 0 0;
+    border-top: 1px solid rgba(201,150,58,0.3);
+    border-left: 1px solid rgba(201,150,58,0.1);
+    border-right: 1px solid rgba(201,150,58,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    position: relative;
+  }
+  .modal-backdrop.open .modal-sheet {
+    transform: translateY(0);
+  }
+
+  /* drag pill */
+  .modal-pill {
+    width: 40px; height: 4px;
+    background: rgba(201,150,58,0.35);
+    border-radius: 100px;
+    margin: 12px auto 0;
+    flex-shrink: 0;
+  }
+
+  /* ── Image area ── */
+  .modal-img-area {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #3D1E0A 0%, #1A0E06 100%);
+  }
+
+  .modal-img-area img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .modal-img-area img.loaded { opacity: 1; }
+
+  /* placeholder when no image */
+  .modal-img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(60,30,10,0.8) 0%, rgba(26,14,6,0.95) 100%);
+  }
+  .modal-img-placeholder .ph-icon { font-size: 4rem; opacity: 0.3; animation: placeholderPulse 2.5s ease infinite; }
+  .modal-img-placeholder .ph-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(201,150,58,0.4);
+  }
+  .modal-img-placeholder.hidden { display: none; }
+
+  /* gradient fade at bottom of image */
+  .modal-img-fade {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to top, #1A0E06, transparent);
+  }
+
+  /* Badge on image */
+  .modal-img-badge {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+  }
+
+  /* ── Close button ── */
+  .modal-close {
+    position: absolute;
+    top: 14px; left: 16px;
+    width: 36px; height: 36px;
+    background: rgba(26,14,6,0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(201,150,58,0.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--gold);
+    font-size: 1rem;
+    z-index: 10;
+    transition: background 0.2s;
+  }
+  .modal-close:active { background: rgba(201,150,58,0.2); }
+
+  /* ── Scrollable content ── */
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 24px 40px;
+    scrollbar-width: none;
+  }
+  .modal-body::-webkit-scrollbar { display: none; }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .modal-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.1;
+    flex: 1;
+  }
+  .modal-name em { color: var(--gold); font-style: italic; }
+
+  .modal-price-block { text-align: right; flex-shrink: 0; }
+  .modal-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .modal-price-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    color: var(--caramel);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .modal-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,150,58,0.4), transparent);
+    margin: 14px 0;
+  }
+
+  .modal-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(245,237,216,0.85);
+    margin-bottom: 20px;
+  }
+
+  /* ingredients pills */
+  .modal-section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .modal-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,150,58,0.2);
+  }
+
+  .modal-ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .modal-ingredient-pill {
+    background: rgba(201,150,58,0.08);
+    border: 1px solid rgba(201,150,58,0.22);
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--caramel);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .modal-ingredient-pill span { font-size: 0.75rem; }
+
+  /* notes / fun fact */
+  .modal-note {
+    background: rgba(201,150,58,0.06);
+    border-left: 2px solid rgba(201,150,58,0.4);
+    border-radius: 0 12px 12px 0;
+    padding: 12px 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: rgba(197,166,118,0.75);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  /* ── Add-to-order button (decorative) ── */
+  .modal-cta {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    background-size: 200% 100%;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--dark-brown);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-position 0.4s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 20px rgba(201,150,58,0.3);
+    margin-top: 4px;
+  }
+  .modal-cta:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px rgba(201,150,58,0.2);
+    background-position: 100% 0;
+  }
+
+  /* ── Swipe to close on mobile ── */
+  .swipe-zone { touch-action: pan-y; }
+</style>
+</head>
+<body>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" id="inicio">
+
+  <div class="hero-bg-mountains"></div>
+
+  <!-- Floating beans decoration -->
+  <div class="floating-beans">
+    <div class="bean" style="top:15%;left:8%;--d:9s;--dl:0s;font-size:1.8rem;">☕</div>
+    <div class="bean" style="top:75%;left:5%;--d:11s;--dl:1s;font-size:1.2rem;">🌱</div>
+    <div class="bean" style="top:20%;right:10%;--d:8s;--dl:2s;font-size:1.5rem;">🍃</div>
+    <div class="bean" style="top:65%;right:8%;--d:13s;--dl:0.5s;font-size:2rem;">☕</div>
+    <div class="bean" style="top:40%;left:3%;--d:10s;--dl:3s;font-size:1rem;">🌿</div>
+    <div class="bean" style="bottom:20%;right:5%;--d:7s;--dl:1.5s;font-size:1.4rem;">🍂</div>
+  </div>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- 3D Coffee Cup -->
+  <div class="hero-3d-scene">
+    <div class="coffee-cup-wrapper">
+      <div class="steam-line"></div>
+      <div class="steam-line"></div>
+      <div class="steam-line"></div>
+      <div class="steam-line"></div>
+      <svg class="cup-svg" width="200" height="190" viewBox="0 0 200 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="saucerGrad" x1="30" y1="158" x2="170" y2="172" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#E8E0D8"/><stop offset="40%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#C8C0B8"/>
+          </linearGradient>
+          <linearGradient id="cupBodyGrad" x1="55" y1="70" x2="145" y2="148" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#FFFFFF"/><stop offset="35%" stop-color="#F5F0EC"/><stop offset="100%" stop-color="#D8D0C8"/>
+          </linearGradient>
+          <linearGradient id="cupInnerGrad" x1="65" y1="70" x2="135" y2="80" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#E8E0D8"/><stop offset="100%" stop-color="#C8C0B8"/>
+          </linearGradient>
+          <linearGradient id="coffeeGrad" x1="65" y1="70" x2="135" y2="82" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#3D1E0A"/><stop offset="60%" stop-color="#2A1208"/><stop offset="100%" stop-color="#1A0A04"/>
+          </linearGradient>
+          <radialGradient id="coffeeSheen2" cx="38%" cy="32%" r="45%">
+            <stop offset="0%" stop-color="rgba(201,150,58,0.18)"/><stop offset="100%" stop-color="rgba(201,150,58,0)"/>
+          </radialGradient>
+          <linearGradient id="goldRim2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#A07828"/><stop offset="25%" stop-color="#E8C060"/>
+            <stop offset="50%" stop-color="#C9963A"/><stop offset="75%" stop-color="#F0D080"/><stop offset="100%" stop-color="#A07828"/>
+          </linearGradient>
+          <filter id="cupShadow2" x="-20%" y="-10%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="rgba(0,0,0,0.4)"/>
+          </filter>
+          <filter id="saucerShadow2"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="rgba(0,0,0,0.25)"/></filter>
+          <!-- Clip for coffee surface so logo stays inside -->
+          <clipPath id="coffeeClip">
+            <ellipse cx="100" cy="76" rx="34" ry="8.5"/>
+          </clipPath>
+        </defs>
+
+        <!-- SAUCER -->
+        <g filter="url(#saucerShadow2)">
+          <ellipse cx="100" cy="166" rx="64" ry="11" fill="rgba(0,0,0,0.2)"/>
+          <ellipse cx="100" cy="160" rx="62" ry="10" fill="url(#saucerGrad)"/>
+          <ellipse cx="100" cy="157" rx="62" ry="9" fill="url(#saucerGrad)"/>
+          <ellipse cx="100" cy="156" rx="32" ry="5.5" fill="#E0D8D0" opacity="0.5"/>
+          <ellipse cx="100" cy="157" rx="62" ry="9" fill="none" stroke="url(#goldRim2)" stroke-width="1.2" opacity="0.8"/>
+          <ellipse cx="74" cy="154" rx="18" ry="3" fill="rgba(255,255,255,0.5)" transform="rotate(-8 74 154)"/>
+        </g>
+
+        <!-- CUP BODY -->
+        <g filter="url(#cupShadow2)">
+          <path d="M58 76 Q56 146 68 153 Q100 162 132 153 Q144 146 142 76 Z" fill="url(#cupBodyGrad)"/>
+          <!-- rim top -->
+          <ellipse cx="100" cy="76" rx="42" ry="10.5" fill="url(#cupInnerGrad)"/>
+          <ellipse cx="100" cy="76" rx="42" ry="10.5" fill="none" stroke="url(#goldRim2)" stroke-width="1.6"/>
+          <!-- coffee liquid -->
+          <ellipse cx="100" cy="76" rx="38" ry="9" fill="url(#coffeeGrad)"/>
+          <ellipse cx="100" cy="76" rx="38" ry="9" fill="url(#coffeeSheen2)"/>
+
+          <!-- ═══ AMBÚ LOGO ON COFFEE SURFACE ═══ -->
+          <g clip-path="url(#coffeeClip)">
+            <!-- Subtle circular halo behind text -->
+            <ellipse cx="100" cy="76" rx="22" ry="6" fill="rgba(201,150,58,0.10)"/>
+            <!-- AMBÚ lettering — styled to look like latte art burned in -->
+            <text
+              x="100" y="79"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              font-family="Georgia, 'Times New Roman', serif"
+              font-size="9.5"
+              font-weight="bold"
+              font-style="italic"
+              letter-spacing="2"
+              fill="rgba(232,185,106,0.82)"
+              transform="scale(1, 0.72) translate(0, 31)"
+            >AMBÚ</text>
+            <!-- thin underline arc below text -->
+            <path d="M84 80 Q100 83 116 80" stroke="rgba(201,150,58,0.35)" stroke-width="0.7" fill="none"/>
+          </g>
+
+          <!-- shine left side -->
+          <path d="M66 90 Q63 108 64 126" stroke="rgba(255,255,255,0.42)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M70 84 Q68 90 69 97" stroke="rgba(255,255,255,0.28)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- shadow right side -->
+          <path d="M136 80 Q140 118 135 150 Q128 153 120 154 Q136 138 135 80Z" fill="rgba(180,160,140,0.10)"/>
+          <!-- bottom gold line -->
+          <path d="M71 151 Q100 160 129 151" stroke="url(#goldRim2)" stroke-width="1" fill="none" opacity="0.55"/>
+        </g>
+
+        <!-- HANDLE -->
+        <g>
+          <path d="M142 92 Q172 92 172 114 Q172 136 142 136" stroke="url(#cupBodyGrad)" stroke-width="13" fill="none" stroke-linecap="round"/>
+          <path d="M142 92 Q168 92 168 114 Q168 136 142 136" stroke="rgba(180,160,140,0.38)" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M142 92 Q172 92 172 114 Q172 136 142 136" stroke="url(#goldRim2)" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.45"/>
+          <path d="M144 96 Q165 96 165 114" stroke="rgba(255,255,255,0.38)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-badge">☕ Cafetería Artesanal · Colombia</div>
+
+  <h1 class="hero-title">
+    AMBÚ<br><span class="accent">Café</span>
+  </h1>
+
+  <div class="hero-decorline"></div>
+
+  <p class="hero-tagline">Sabores que conectan momentos</p>
+
+  <div class="hero-scroll-cta" onclick="document.getElementById('nav').scrollIntoView({behavior:'smooth'})">
+    <span>Ver Menú</span>
+    <div class="scroll-arrow"></div>
+  </div>
+
+</section>
+
+<!-- MARQUEE BAND -->
+<div class="marquee-band">
+  <div class="marquee-inner">
+    <span class="marquee-item">Bebidas Calientes</span>
+    <span class="marquee-item">Bebidas Frías</span>
+    <span class="marquee-item">Acompañamientos</span>
+    <span class="marquee-item">Cervezas</span>
+    <span class="marquee-item">100% Artesanal</span>
+    <span class="marquee-item">Origen Colombia</span>
+    <span class="marquee-item">Bebidas Calientes</span>
+    <span class="marquee-item">Bebidas Frías</span>
+    <span class="marquee-item">Acompañamientos</span>
+    <span class="marquee-item">Cervezas</span>
+    <span class="marquee-item">100% Artesanal</span>
+    <span class="marquee-item">Origen Colombia</span>
+  </div>
+</div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav-sticky" id="nav">
+  <div class="nav-tabs">
+    <div class="nav-tab active" data-section="calientes" onclick="scrollToSection('calientes',this)">
+      <span class="tab-icon">☕</span>
+      <span class="tab-label">Calientes</span>
+    </div>
+    <div class="nav-tab" data-section="frias" onclick="scrollToSection('frias',this)">
+      <span class="tab-icon">🧊</span>
+      <span class="tab-label">Frías</span>
+    </div>
+    <div class="nav-tab" data-section="acomp" onclick="scrollToSection('acomp',this)">
+      <span class="tab-icon">🥐</span>
+      <span class="tab-label">Para Comer</span>
+    </div>
+    <div class="nav-tab" data-section="cervezas" onclick="scrollToSection('cervezas',this)">
+      <span class="tab-icon">🍺</span>
+      <span class="tab-label">Cervezas</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ BEBIDAS CALIENTES ═══════════════ -->
+<section class="section section-bebidas-calientes" id="calientes">
+  <div class="leaf-deco" style="top:-20px;right:-20px;">🍃</div>
+
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Para el alma</span>
+    <h2 class="section-title">Bebidas <em>Calientes</em></h2>
+    <div class="section-divider"><span class="section-divider-icon">☕</span></div>
+  </div>
+
+  <div class="cards-grid">
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">☕</span></div>
+        <img data-src="data:image/jpeg;base64,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" alt="Espresso">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Espresso</div>
+        <div class="drink-desc">18-20ml de espresso puro, denso y aromático</div>
+        <span class="drink-badge badge-hot">Clásico</span>
+      </div>
+      <div class="drink-price">$4.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">☕</span></div>
+        <img data-src="" alt="Americano">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Americano</div>
+        <div class="drink-desc">30ml espresso + 100ml agua caliente</div>
+        <span class="drink-badge badge-hot">Suave</span>
+      </div>
+      <div class="drink-price">$2.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">☕</span></div>
+        <img data-src="" alt="Espresso Napolitano">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Espresso Napolitano</div>
+        <div class="drink-desc">Espresso concentrado con toque napolitano</div>
+        <span class="drink-badge badge-hot">Intenso</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">☕</span></div>
+        <img data-src="" alt="Capuchino">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Capuchino</div>
+        <div class="drink-desc">30ml espresso + leche cremada con arte latte</div>
+        <span class="drink-badge badge-hot">Popular</span>
+      </div>
+      <div class="drink-price"><span class="price-special">$5.000</span><small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">☕</span></div>
+        <img data-src="" alt="Mocca">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Mocca</div>
+        <div class="drink-desc">30ml espresso + 30ml chocolate + leche cremada</div>
+        <span class="drink-badge badge-hot">Dulce</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">☕</span></div>
+        <img data-src="" alt="Latte">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Latte</div>
+        <div class="drink-desc">15ml espresso + generosa leche cremada aterciopelada</div>
+        <span class="drink-badge badge-hot">Suave</span>
+      </div>
+      <div class="drink-price">$4.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍬</span></div>
+        <img data-src="" alt="Agua de Panela">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Agua de Panela</div>
+        <div class="drink-desc">Panela artesanal + agua + queso campesino</div>
+        <span class="drink-badge badge-hot">Tradicional</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍃</span></div>
+        <img data-src="" alt="Aromática de Frutas">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Aromática de Frutas</div>
+        <div class="drink-desc">Frutas naturales + agua caliente infusionada</div>
+        <span class="drink-badge badge-hot">Natural</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🥛</span></div>
+        <img data-src="" alt="Milo Caliente">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Milo Caliente</div>
+        <div class="drink-desc">Milo + leche caliente reconfortante</div>
+        <span class="drink-badge badge-hot">Energético</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍫</span></div>
+        <img data-src="" alt="Chocolate con Masmelos">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Chocolate con Masmelos</div>
+        <div class="drink-desc">Chocolate caliente + masmelos flotando</div>
+        <span class="drink-badge badge-hot">Especial</span>
+      </div>
+      <div class="drink-price">$6.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🌿</span></div>
+        <img data-src="" alt="Chai Latte">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Chai Latte</div>
+        <div class="drink-desc">Té negro + canela + clavos + cardamomo + leche</div>
+        <span class="drink-badge badge-hot">Especiado</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">✨</span></div>
+        <img data-src="" alt="Filtrado Especial">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Filtrado Especial</div>
+        <div class="drink-desc">400ml de café de origen, filtrado en método artesanal</div>
+        <span class="drink-badge badge-hot">Premium ✦</span>
+      </div>
+      <div class="drink-price">$20.000<small>COP</small></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="ambient-divider"></div>
+
+<!-- ═══════════════ BEBIDAS FRÍAS ═══════════════ -->
+<section class="section section-bebidas-frias" id="frias">
+  <div class="leaf-deco" style="bottom:0;left:-10px;transform:scaleX(-1);">🌿</div>
+
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Refresco & Energía</span>
+    <h2 class="section-title">Bebidas <em>Frías</em></h2>
+    <div class="section-divider"><span class="section-divider-icon">🧊</span></div>
+  </div>
+
+  <div class="cards-grid">
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🧋</span></div>
+        <img data-src="" alt="Frappé">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Frappé</div>
+        <div class="drink-desc">Hielo + leche + azúcar + esencia + crema batida</div>
+        <span class="drink-badge badge-cold">Refrescante</span>
+      </div>
+      <div class="drink-price"><span class="price-special">$6.000</span><small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🧊</span></div>
+        <img data-src="" alt="Granizado">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Granizado</div>
+        <div class="drink-desc">Hielo + leche + azúcar + esencia de fruta</div>
+        <span class="drink-badge badge-cold">Fresco</span>
+      </div>
+      <div class="drink-price">$6.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">☕</span></div>
+        <img data-src="" alt="Capuchino Frío">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Capuchino Frío</div>
+        <div class="drink-desc">Hielo + espresso + leche + crema batida</div>
+        <span class="drink-badge badge-cold">Cremoso</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🥛</span></div>
+        <img data-src="" alt="Milo Frío">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Milo Frío</div>
+        <div class="drink-desc">Hielo + Milo + leche fría energética</div>
+        <span class="drink-badge badge-cold">Energético</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🌊</span></div>
+        <img data-src="" alt="Cold Brew">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Cold Brew</div>
+        <div class="drink-desc">Hielo + filtrado especial de extracción en frío</div>
+        <span class="drink-badge badge-cold">Artesanal</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🥃</span></div>
+        <img data-src="" alt="Café Irlandés">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Café Irlandés</div>
+        <div class="drink-desc">Whiskey + espresso + crema de leche batida</div>
+        <span class="drink-badge badge-alcohol">Con Licor</span>
+      </div>
+      <div class="drink-price">$10.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">✨</span></div>
+        <img data-src="" alt="Asiático">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Asiático</div>
+        <div class="drink-desc">Leche condensada + whiskey + espresso + espuma + canela</div>
+        <span class="drink-badge badge-alcohol">Signature ✦</span>
+      </div>
+      <div class="drink-price">$12.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍨</span></div>
+        <img data-src="" alt="Affogato">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Affogato</div>
+        <div class="drink-desc">Helado artesanal + espresso caliente + amaretto</div>
+        <span class="drink-badge badge-alcohol">Degustación</span>
+      </div>
+      <div class="drink-price">$8.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍷</span></div>
+        <img data-src="" alt="Copa de Vino Tinto">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Copa de Vino Tinto</div>
+        <div class="drink-desc">Merlot · Malbec · Cabernet Sauvignon</div>
+        <span class="drink-badge badge-alcohol">Vino</span>
+      </div>
+      <div class="drink-price">$10.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">💧</span></div>
+        <img data-src="" alt="Agua Natural">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Agua Natural</div>
+        <div class="drink-desc">Agua mineral fría</div>
+        <span class="drink-badge badge-cold">Básico</span>
+      </div>
+      <div class="drink-price">$4.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🥤</span></div>
+        <img data-src="" alt="Coca-Cola">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Coca-Cola</div>
+        <div class="drink-desc">Coca-Cola bien fría</div>
+        <span class="drink-badge badge-cold">Clásico</span>
+      </div>
+      <div class="drink-price">$5.000<small>COP</small></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="ambient-divider"></div>
+
+<!-- ═══════════════ ACOMPAÑAMIENTOS ═══════════════ -->
+<section class="section section-acompañamientos" id="acomp">
+
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Del campo a la mesa</span>
+    <h2 class="section-title">Para <em>Comer</em></h2>
+    <div class="section-divider"><span class="section-divider-icon">🥐</span></div>
+  </div>
+
+  <div class="cards-grid">
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🌽</span></div>
+        <img data-src="" alt="Arepa de Choclo">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Arepa de Choclo</div>
+        <div class="drink-desc">Maíz dulce artesanal, crujiente por fuera, suave por dentro</div>
+        <span class="drink-badge badge-food">Tradicional</span>
+      </div>
+      <div class="drink-price">$7.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🌿</span></div>
+        <img data-src="" alt="Tamal">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Tamal</div>
+        <div class="drink-desc">Tamal casero envuelto en hoja, receta de la región</div>
+        <span class="drink-badge badge-food">Casero ✦</span>
+      </div>
+      <div class="drink-price">$8.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🥪</span></div>
+        <img data-src="" alt="Sándwich">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Sándwich</div>
+        <div class="drink-desc">Pan artesanal con rellenos frescos de la casa</div>
+        <span class="drink-badge badge-food">Ligero</span>
+      </div>
+      <div class="drink-price">$4.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍩</span></div>
+        <img data-src="" alt="Donas">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Donas</div>
+        <div class="drink-desc">Esponjosas, azucaradas, perfectas con el café</div>
+        <span class="drink-badge badge-food">Dulce</span>
+      </div>
+      <div class="drink-price">$3.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🎂</span></div>
+        <img data-src="" alt="Tortas">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Tortas</div>
+        <div class="drink-desc">Torta del día, horneada fresca en la cafetería</div>
+        <span class="drink-badge badge-food">Fresco</span>
+      </div>
+      <div class="drink-price">$4.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍪</span></div>
+        <img data-src="" alt="Achiras">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Achiras</div>
+        <div class="drink-desc">Galletas típicas del Huila, crujientes y sabrosas</div>
+        <span class="drink-badge badge-food">Regional</span>
+      </div>
+      <div class="drink-price">$2.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🥥</span></div>
+        <img data-src="" alt="Galletas de Coco">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Galletas de Coco</div>
+        <div class="drink-desc">Galletas artesanales de coco, crujientes y aromáticas</div>
+        <span class="drink-badge badge-food">Artesanal</span>
+      </div>
+      <div class="drink-price">$2.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍫</span></div>
+        <img data-src="" alt="Brownies">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Brownies</div>
+        <div class="drink-desc">Brownies de chocolate intenso, húmedos y cremosos</div>
+        <span class="drink-badge badge-food">Favorito ✦</span>
+      </div>
+      <div class="drink-price">$6.000<small>COP</small></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="ambient-divider"></div>
+
+<!-- ═══════════════ CERVEZAS ═══════════════ -->
+<section class="section section-cervezas" id="cervezas">
+
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Frías & Perfectas</span>
+    <h2 class="section-title"><em>Cervezas</em> & Spirits</h2>
+    <div class="section-divider"><span class="section-divider-icon">🍺</span></div>
+  </div>
+
+  <div class="cards-grid">
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍺</span></div>
+        <img data-src="" alt="Stella Artois">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Stella Artois</div>
+        <div class="drink-desc">Lager belga premium, refrescante y elegante</div>
+        <span class="drink-badge badge-beer">Importada</span>
+      </div>
+      <div class="drink-price">$9.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍺</span></div>
+        <img data-src="" alt="Corona">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Corona</div>
+        <div class="drink-desc">Cerveza mexicana, perfecta con limón</div>
+        <span class="drink-badge badge-beer">Importada</span>
+      </div>
+      <div class="drink-price">$9.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍺</span></div>
+        <img data-src="" alt="BBC">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">BBC</div>
+        <div class="drink-desc">Bogotá Beer Company, orgullo nacional</div>
+        <span class="drink-badge badge-beer">Nacional</span>
+      </div>
+      <div class="drink-price">$9.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍻</span></div>
+        <img data-src="" alt="Artesanal Laboyana">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Artesanal Laboyana</div>
+        <div class="drink-desc">Cerveza artesanal de la región, sabor único del Huila</div>
+        <span class="drink-badge badge-beer">Local ✦</span>
+      </div>
+      <div class="drink-price">$9.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🍺</span></div>
+        <img data-src="" alt="Club Colombia">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Club Colombia</div>
+        <div class="drink-desc">La cerveza colombiana por excelencia</div>
+        <span class="drink-badge badge-beer">Nacional</span>
+      </div>
+      <div class="drink-price">$9.000<small>COP</small></div>
+    </div>
+
+    <div class="drink-card special">
+      <div class="drink-img-wrap">
+        <div class="img-placeholder"><span class="placeholder-icon">🥃</span></div>
+        <img data-src="" alt="Smirnoff">
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Smirnoff</div>
+        <div class="drink-desc">Vodka premium, ideal para combinados</div>
+        <span class="drink-badge badge-alcohol">Spirits</span>
+      </div>
+      <div class="drink-price">$13.000<small>COP</small></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  <span class="footer-coffee-icon">☕</span>
+  <div class="footer-logo">AMBÚ</div>
+  <div class="footer-tagline">Sabores que conectan momentos</div>
+
+  <div class="hero-decorline"></div>
+
+  <p style="font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:rgba(197,166,118,0.6);line-height:1.6;margin:16px 0;font-style:italic;">
+    Una cafetería con raíces en la tierra,<br>donde cada sorbo cuenta una historia del campo colombiano.
+  </p>
+
+  <div class="footer-motto">
+    <span class="motto-pill">Disfruta</span>
+    <span class="motto-pill">Relájate</span>
+    <span class="motto-pill">Déjate Sorprender</span>
+  </div>
+
+  <p style="margin-top:32px;font-family:'Space Mono',monospace;font-size:0.5rem;color:rgba(197,166,118,0.3);letter-spacing:0.2em;text-transform:uppercase;">
+    © Ambú Café · Todos los derechos reservados
+  </p>
+</footer>
+
+<!-- ═══════════════ MODAL ═══════════════ -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+  <div class="modal-sheet swipe-zone" id="modalSheet">
+    <div class="modal-pill"></div>
+
+    <!-- Image -->
+    <div class="modal-img-area" id="modalImgArea">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+      <img id="modalImg" src="" alt="">
+      <div class="modal-img-placeholder" id="modalPlaceholder">
+        <span class="ph-icon" id="modalPlaceholderIcon">☕</span>
+        <span class="ph-text">Sin foto aún</span>
+      </div>
+      <div class="modal-img-fade"></div>
+      <div class="modal-img-badge" id="modalBadge"></div>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <div class="modal-header">
+        <div class="modal-name" id="modalName">Nombre del producto</div>
+        <div class="modal-price-block">
+          <div class="modal-price" id="modalPrice">$0</div>
+          <div class="modal-price-label">COP</div>
+        </div>
+      </div>
+
+      <div class="modal-divider"></div>
+
+      <p class="modal-desc" id="modalDesc">Descripción del producto.</p>
+
+      <div id="modalIngredientsBlock">
+        <div class="modal-section-label">Ingredientes</div>
+        <div class="modal-ingredients" id="modalIngredients"></div>
+      </div>
+
+      <div class="modal-note" id="modalNote"></div>
+
+      <button class="modal-cta" id="modalCta">
+        <span>✦</span> Pide este producto <span>✦</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ════════════════════════════════════════
+  // PRODUCT DATA — edit descriptions, ingredients & notes here
+  // Add image URLs to the "img" field when you have photos
+  // ════════════════════════════════════════
+  const PRODUCTS = {
+    // ── BEBIDAS CALIENTES ──
+    'Espresso': {
+      price: '$4.000', icon: '☕', badge: 'Clásico', badgeClass: 'badge-hot',
+      img: 'data:image/jpeg;base64,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',
+      desc: 'La base de todo gran café. Nuestro espresso es extraído con 18-20ml de agua a 92°C sobre café de origen colombiano, molido al momento. Concentrado, aterciopelado, con una crema dorada perfecta — la esencia pura de Ambú.',
+      ingredients: [['☕','Café origen Colombia'],['💧','Agua filtrada 92°C'],['⏱','Extracción 25-30 seg']],
+      note: '☀️ El espresso perfecto tiene una crema color avellana. Si notas la tuya muy oscura o muy clara, cuéntanos — lo ajustamos para ti.'
+    },
+    'Americano': {
+      price: '$2.000', icon: '☕', badge: 'Suave', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'Un espresso que se abre al mundo. Extraemos 30ml de espresso y lo acompañamos con 100ml de agua caliente, obteniendo una taza amplia, suave y llena de matices. Ideal para tomarse con calma y saborear cada nota del café.',
+      ingredients: [['☕','30ml Espresso'],['💧','100ml Agua caliente'],['🌊','Ratio 1:3']],
+      note: '💡 El americano nació cuando los soldados estadounidenses en Italia durante la WWII diluían el espresso para imitar su café de casa.'
+    },
+    'Espresso Napolitano': {
+      price: '$5.000', icon: '☕', badge: 'Intenso', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'Una preparación de carácter fuerte e historia. El estilo napolitano lleva el espresso a su forma más intensa y concentrada, con un perfil oscuro y robusto que rinde tributo a la cultura cafetera del sur de Italia.',
+      ingredients: [['☕','Espresso concentrado'],['🌑','Tostión oscura especial'],['🍫','Notas de chocolate amargo']],
+      note: '🇮🇹 Nápoles tiene la tradición cafetera más intensa de Italia — es la ciudad donde el espresso se convirtió en arte de barrio.'
+    },
+    'Capuchino': {
+      price: '$5.000', icon: '☕', badge: 'Popular', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'El equilibrio perfecto entre espresso, leche y espuma. Preparamos 30ml de espresso y los coronamos con leche vaporizada a textura sedosa, creando un arte latte que es casi una pena revolver. Un clásico que nunca falla.',
+      ingredients: [['☕','30ml Espresso'],['🥛','Leche entera cremada'],['☁️','Espuma aterciopelada'],['🎨','Arte latte']],
+      note: '🎨 Nuestros baristas hacen arte en cada taza. Si ves algo bonito en tu espuma — tómale foto antes de beberlo.'
+    },
+    'Mocca': {
+      price: '$5.000', icon: '🍫', badge: 'Dulce', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'Cuando el café y el chocolate se enamoran. Combinamos 30ml de espresso con chocolate artesanal y lo terminamos con leche cremada que aporta suavidad y cuerpo. Una bebida que conquista a los amantes del dulce sin renunciar al café.',
+      ingredients: [['☕','30ml Espresso'],['🍫','30ml Chocolate artesanal'],['🥛','Leche cremada'],['✨','Toque de vainilla']],
+      note: '🍫 El cacao que usamos proviene de la región del Huila — la misma tierra que nos da nuestro café.'
+    },
+    'Latte': {
+      price: '$4.000', icon: '☕', badge: 'Suave', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'Suavidad hecha taza. Con solo 15ml de espresso como base y una generosa porción de leche cremada a textura micro-burbuja, el latte es la bebida más amable del menú — cremosa, cálida, perfecta para una mañana tranquila o una tarde de conversación.',
+      ingredients: [['☕','15ml Espresso base'],['🥛','Leche entera vaporizada'],['🌡️','65°C temperatura perfecta'],['☁️','Micro-espuma sedosa']],
+      note: '☁️ El secreto de un buen latte está en la temperatura de la leche — demasiado caliente pierde la dulzura natural. La nuestra se vaporiza siempre a 65°C.'
+    },
+    'Agua de Panela': {
+      price: '$5.000', icon: '🍬', badge: 'Tradicional', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'El sabor más colombiano del menú. Agua de panela derretida con paciencia, endulzada con el caramelo natural de la caña de azúcar, y acompañada de queso campesino fresco que se deshace entre los dedos. Una tradición que abraza el alma.',
+      ingredients: [['🍬','Panela de caña artesanal'],['💧','Agua'],['🧀','Queso campesino fresco'],['🌡️','Servida bien caliente']],
+      note: '🇨🇴 El agua de panela con queso es el desayuno más querido de las montañas colombianas. Cada sorbo es un abrazo de abuela.'
+    },
+    'Aromática de Frutas': {
+      price: '$5.000', icon: '🍃', badge: 'Natural', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'Una infusión viva y aromática preparada con frutas frescas de temporada. El agua caliente libera los aceites esenciales y azúcares naturales de la fruta, creando una bebida perfumada, reconfortante y sin cafeína. Perfecta para quienes prefieren algo ligero.',
+      ingredients: [['🍓','Frutas frescas de temporada'],['💧','Agua caliente infusionada'],['🌿','Sin azúcar añadida'],['🍋','Notas cítricas naturales']],
+      note: '🌸 Pregúntale al barista qué fruta hay hoy — usamos lo que esté fresco y de temporada.'
+    },
+    'Milo Caliente': {
+      price: '$5.000', icon: '🥛', badge: 'Energético', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'El favorito de siempre, elevado. Milo mezclado con leche caliente y entera para una bebida cremosa, dulce y con ese sabor maltoso inconfundible que te transporta a la infancia. Energía en estado puro en cada taza.',
+      ingredients: [['🥛','Leche entera caliente'],['🌾','Milo Malta & Cacao'],['💪','Rico en vitaminas y minerales']],
+      note: '⚡ El Milo tiene tanto cacao como para darte un boost de energía sin cafeína — perfecto para niños y adultos que quieren algo diferente.'
+    },
+    'Chocolate con Masmelos': {
+      price: '$6.000', icon: '🍫', badge: 'Especial', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'Una pequeña celebración en taza. Chocolate oscuro derretido con leche caliente, coronado con masmelos que se derriten lentamente en la superficie creando vetas blancas y dulces. Una bebida que transforma cualquier momento en algo especial.',
+      ingredients: [['🍫','Chocolate oscuro artesanal'],['🥛','Leche entera caliente'],['☁️','Masmelos artesanales'],['✨','Toque de canela opcional']],
+      note: '🎉 Perfecta para compartir — pide dos y hazle feliz el día a alguien.'
+    },
+    'Chai Latte': {
+      price: '$5.000', icon: '🌿', badge: 'Especiado', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'Un viaje a través de las especias. Preparamos un concentrado de té negro con canela, clavos de olor y cardamomo verde, y lo mezclamos con leche vaporizada para crear una bebida cálida, aromática y profundamente reconfortante. El Oriente en Ambú.',
+      ingredients: [['🍵','Té negro de base'],['🌿','Canela en rama'],['🌱','Clavos de olor'],['🫚','Cardamomo verde'],['🥛','Leche vaporizada']],
+      note: '🌏 El chai tradicional indio se hace hervido directo en la leche — nuestra versión respeta esa esencia con un twist de barista colombiano.'
+    },
+    'Filtrado Especial': {
+      price: '$20.000', icon: '✨', badge: 'Premium ✦', badgeClass: 'badge-hot',
+      img: '',
+      desc: 'Nuestra joya. 400ml de café de origen colombiano, cultivado a más de 1.700 metros de altitud, filtrado en método artesanal durante 4 minutos para extraer cada capa de sabor: floral al inicio, frutal en el medio, a nuez en el final. Una experiencia de cata completa.',
+      ingredients: [['🏔️','Café single origin Colombia'],['⚖️','18g café / 300ml agua'],['🌡️','Agua 94°C exactos'],['⏱','Filtrado 4 minutos'],['🌺','Notas florales y frutales']],
+      note: '🏆 Este es el café que nos define. Si solo vas a pedir uno en tu vida en Ambú, que sea este. Te prometemos que no te arrepentirás.'
+    },
+
+    // ── BEBIDAS FRÍAS ──
+    'Frappé': {
+      price: '$6.000', icon: '🧋', badge: 'Refrescante', badgeClass: 'badge-cold',
+      img: '',
+      desc: 'La versión fría más querida del menú. Hielo triturado con leche fría, azúcar y esencia a elección, todo batido hasta lograr una textura cremosa y helada, rematada con crema batida en la cima. El alivio perfecto para los días calurosos.',
+      ingredients: [['🧊','Hielo triturado'],['🥛','Leche fría'],['🍬','Azúcar'],['🌸','Esencia a elección'],['🍦','Crema batida']],
+      note: '❄️ Puedes elegir la esencia: vainilla, caramelo, avellana, fresa o café. Pregúntale al barista cuáles hay disponibles hoy.'
+    },
+    'Granizado': {
+      price: '$6.000', icon: '🧊', badge: 'Fresco', badgeClass: 'badge-cold',
+      img: '',
+      desc: 'La versión más crujiente y juguetona. Similar al frappé pero con hielo granulado — cada sorbo tiene esa textura que cruje entre los dientes. Con leche, azúcar y esencia de fruta, es un refrescante total que se disfruta hasta el último chip de hielo.',
+      ingredients: [['🧊','Hielo granulado'],['🥛','Leche fría'],['🍬','Azúcar'],['🍓','Esencia de fruta']],
+      note: '🔊 El truco está en no mezclarlo demasiado — queremos que el hielo granulado se sienta en cada sorbo.'
+    },
+    'Capuchino Frío': {
+      price: '$5.000', icon: '☕', badge: 'Cremoso', badgeClass: 'badge-cold',
+      img: '',
+      desc: 'Todo lo que amas del capuchino, pero helado. Espresso frío sobre hielo con leche fría y esa crema batida que se mezcla lentamente mientras bebes. La intensidad del café con la suavidad del frío — perfecto para los días en que quieres ambos mundos.',
+      ingredients: [['☕','Espresso frío'],['🧊','Hielo'],['🥛','Leche fría'],['🍦','Crema batida']],
+      note: '🌡️ Si te gusta más intenso, pide doble espresso — te lo preparamos igual sin costo extra si nos lo dices.'
+    },
+    'Milo Frío': {
+      price: '$5.000', icon: '🥛', badge: 'Energético', badgeClass: 'badge-cold',
+      img: '',
+      desc: 'El Milo que todos conocemos, en versión helada y refrescante. Milo mezclado con leche fría sobre hielo — una bebida energética, cremosa y nostálgica que funciona igual de bien a las 7am que a las 4pm.',
+      ingredients: [['🌾','Milo Malta & Cacao'],['🥛','Leche fría entera'],['🧊','Hielo']],
+      note: '💚 Si eres del equipo que mezcla el Milo con la cuchara hasta que espume — aquí lo entendemos perfectamente.'
+    },
+    'Cold Brew': {
+      price: '$5.000', icon: '🌊', badge: 'Artesanal', badgeClass: 'badge-cold',
+      img: '',
+      desc: 'El café más paciente del menú. Nuestro Filtrado Especial extraído en frío durante 12-18 horas, sin ningún calor, para liberar solo los azúcares naturales y los sabores suaves del café — sin la acidez del calor. El resultado: un café oscuro, sedoso y perfectamente frío.',
+      ingredients: [['🏔️','Filtrado Especial de origen'],['❄️','Extracción en frío 12-18h'],['🧊','Hielo'],['💧','Sin agua añadida']],
+      note: '⏳ El cold brew requiere casi un día de preparación. Por eso el resultado sabe tan diferente — la paciencia tiene su recompensa.'
+    },
+    'Café Irlandés': {
+      price: '$10.000', icon: '🥃', badge: 'Con Licor', badgeClass: 'badge-alcohol',
+      img: '',
+      desc: 'El café que calienta desde adentro. Whiskey premium mezclado con espresso recién extraído y coronado con crema de leche batida que flota sobre la superficie oscura. Una bebida que es a la vez estimulante y relajante — para momentos que merecen algo especial.',
+      ingredients: [['🥃','Whiskey premium'],['☕','Espresso fresco'],['🍦','Crema de leche batida'],['🌙','Ideal para la noche']],
+      note: '🍀 La receta original del Irish Coffee lleva azúcar morena — si lo prefieres así, pídelo y con gusto se lo hacemos.'
+    },
+    'Asiático': {
+      price: '$12.000', icon: '✨', badge: 'Signature ✦', badgeClass: 'badge-alcohol',
+      img: '',
+      desc: 'La bebida signature de Ambú. Leche condensada en el fondo, whiskey en el medio, espresso recién extraído, espuma de leche encima y una nube de canela molida para cerrar. Cada capa tiene su momento — la experiencia cambia con cada sorbo.',
+      ingredients: [['🍯','Leche condensada'],['🥃','Whiskey'],['☕','Espresso doble'],['☁️','Espuma de leche'],['🌿','Canela molida fresca']],
+      note: '⭐ El asiático es nuestra bebida más pedida y nuestra favorita para recomendar. Si vienes por primera vez — empieza por aquí.'
+    },
+    'Affogato': {
+      price: '$8.000', icon: '🍨', badge: 'Degustación', badgeClass: 'badge-alcohol',
+      img: '',
+      desc: 'El postre y el café en una sola taza. Una bola de helado artesanal sobre la que vertemos un espresso caliente al instante — el choque entre el frío del helado y el calor del café crea una experiencia de contrastes única. El amaretto lo lleva a otro nivel.',
+      ingredients: [['🍨','Helado artesanal'],['☕','Espresso caliente'],['🍒','Amaretto'],['❄️🔥','Contraste frío-caliente']],
+      note: '🎭 La magia del affogato está en el contraste — el helado se derrite lentamente mientras el espresso lo baña. Bébelo rápido para vivirlo completo.'
+    },
+    'Copa de Vino Tinto': {
+      price: '$10.000', icon: '🍷', badge: 'Vino', badgeClass: 'badge-alcohol',
+      img: '',
+      desc: 'Vino de carácter para acompañar la tarde. Ofrecemos una selección rotatoria entre Merlot suave y frutal, Malbec argentino de cuerpo robusto, y Cabernet Sauvignon con sus notas de currants y especias. Pregunta al barista cuál descorchamos hoy.',
+      ingredients: [['🍷','Merlot / Malbec / Cabernet'],['🍇','Uvas seleccionadas'],['🫙','Importado y local'],['🧀','Ideal con achiras']],
+      note: '🍇 El vino cambia según la semana — siempre buscamos cepas interesantes para compartir contigo.'
+    },
+    'Agua Natural': {
+      price: '$4.000', icon: '💧', badge: 'Básico', badgeClass: 'badge-cold',
+      img: '',
+      desc: 'A veces lo que el cuerpo pide es simplemente agua. Agua mineral natural, fría y pura — el mejor acompañamiento entre sorbo y sorbo de café.',
+      ingredients: [['💧','Agua mineral'],['❄️','Bien fría']],
+      note: '💧 Siempre recomendamos acompañar el espresso con agua — limpia el paladar y prepara las papilas para el siguiente sorbo.'
+    },
+    'Coca-Cola': {
+      price: '$5.000', icon: '🥤', badge: 'Clásico', badgeClass: 'badge-cold',
+      img: '',
+      desc: 'La clásica de siempre, bien fría. Perfecta sola, perfecta con el tamal, perfecta con el sándwich. Hay días en que simplemente quieres una Coca-Cola bien fría y Ambú te la tiene.',
+      ingredients: [['🥤','Coca-Cola original'],['🧊','Con bastante hielo'],['🍋','Con limón si lo pides']],
+      note: '🤫 Un secreto: la Coca-Cola fría con el tamal de la casa es una combinación que no se ve venir pero que no decepciona.'
+    },
+
+    // ── ACOMPAÑAMIENTOS ──
+    'Arepa de Choclo': {
+      price: '$7.000', icon: '🌽', badge: 'Tradicional', badgeClass: 'badge-food',
+      img: '',
+      desc: 'Maíz dulce del campo colombiano, molido y amasado a mano con amor y paciencia. Tostada en plancha hasta que la costra quede dorada y crujiente mientras por dentro sigue suave y tierna. Un mordisco y entiendes por qué esta arepa es la reina del desayuno colombiano.',
+      ingredients: [['🌽','Maíz choclo dulce'],['🧀','Queso campesino opcional'],['🧈','Mantequilla'],['🔥','Plancha de hierro']],
+      note: '🌽 La arepa de choclo es mejor cuando está caliente y recién hecha. Si pides con queso adentro, el derretido es parte de la experiencia.'
+    },
+    'Tamal': {
+      price: '$8.000', icon: '🌿', badge: 'Casero ✦', badgeClass: 'badge-food',
+      img: '',
+      desc: 'Un tamal de verdad, de los que se hacen como en casa. Masa de maíz sazonada con guiso criollo, rellena generosamente y envuelta en hoja de bijao antes de cocinarse al vapor por horas. Cada uno es un mundo — y el nuestro sabe a región.',
+      ingredients: [['🌽','Masa de maíz sazonada'],['🥩','Guiso criollo'],['🌿','Hoja de bijao'],['⏳','Cocido al vapor horas']],
+      note: '🍃 El tamal se envuelve en hoja de bijao — una palma tropical que le da ese aroma y sabor tan particular. No lo deseches: úsala para servirte el café después.'
+    },
+    'Sándwich': {
+      price: '$4.000', icon: '🥪', badge: 'Ligero', badgeClass: 'badge-food',
+      img: '',
+      desc: 'Pan artesanal suave con rellenos frescos de la casa. Rápido, satisfactorio y honesto — el acompañamiento perfecto para el café de la mañana o el tinto de la tarde cuando el estómago pide algo sin complicaciones.',
+      ingredients: [['🍞','Pan artesanal'],['🥬','Lechuga fresca'],['🍅','Tomate'],['🧀','Queso'],['🥩','Proteína del día']],
+      note: '🥪 Pregunta por el relleno del día — rotamos ingredientes según lo que esté fresco en la mañana.'
+    },
+    'Donas': {
+      price: '$3.000', icon: '🍩', badge: 'Dulce', badgeClass: 'badge-food',
+      img: '',
+      desc: 'Esponjosas, azucaradas y perfectas. Nuestras donas son ligeras, con una miga tierna y ese brillo de azúcar glaseada que las hace irresistibles. Pequeñas, humildes y con el poder de mejorar cualquier tarde.',
+      ingredients: [['🌾','Harina artesanal'],['🍬','Azúcar glaseada'],['🥚','Huevo fresco'],['🧈','Mantequilla']],
+      note: '☕ Una dona con espresso es una combinación que los italianos hubieran inventado si hubieran conocido la arepa antes.'
+    },
+    'Tortas': {
+      price: '$4.000', icon: '🎂', badge: 'Fresco', badgeClass: 'badge-food',
+      img: '',
+      desc: 'La torta del día, horneada en la mañana para que llegues a lo fresco. Cambia según la temporada y el ánimo de la casa — puede ser zanahoria, banano, maracuyá o chocolate. Siempre húmeda, siempre esponjosa, siempre hecha con cariño.',
+      ingredients: [['🥚','Huevos frescos'],['🌾','Harina'],['🍌','Fruta de temporada'],['🍯','Endulzada naturalmente']],
+      note: '🎂 Pregunta cuál es la torta del día — nunca es la misma dos veces seguidas.'
+    },
+    'Achiras': {
+      price: '$2.000', icon: '🍪', badge: 'Regional', badgeClass: 'badge-food',
+      img: '',
+      desc: 'Las galletas más famosas del Huila. Crujientes por fuera, con esa textura arenosa y ese sabor suave a almidón de achira que no se parece a nada más. Un patrimonio gastronómico del departamento que viajó hasta tu mesa.',
+      ingredients: [['🌿','Almidón de achira'],['🧀','Queso blanco'],['🥚','Huevo'],['🧂','Sal y secreto']],
+      note: '🏔️ Las achiras son la snack oficial del Huila. Si no las conocías, bienvenido — ya no podrás vivir sin ellas.'
+    },
+    'Galletas de Coco': {
+      price: '$2.000', icon: '🥥', badge: 'Artesanal', badgeClass: 'badge-food',
+      img: '',
+      desc: 'Crujientes, doradas y perfumadas a coco. Galletas artesanales horneadas en casa con coco rallado tostado que les da ese aroma tropical inconfundible. Pequeñas pero con mucho carácter — perfectas para acompañar cualquier bebida caliente.',
+      ingredients: [['🥥','Coco rallado tostado'],['🌾','Harina'],['🍬','Azúcar morena'],['🧈','Mantequilla']],
+      note: '🥥 El coco se tuesta justo antes de mezclar — ese paso es lo que hace la diferencia entre una galleta buena y una extraordinaria.'
+    },
+    'Brownies': {
+      price: '$6.000', icon: '🍫', badge: 'Favorito ✦', badgeClass: 'badge-food',
+      img: '',
+      desc: 'El postre más pedido de Ambú, y con razón. Húmedos en el centro, con una corteza ligeramente crujiente, intensamente chocolatosos. Horneados en casa con chocolate oscuro de verdad — no de bolsa. Un brownie que se recuerda.',
+      ingredients: [['🍫','Chocolate oscuro 70%'],['🥚','Huevos frescos'],['🧈','Mantequilla real'],['🌾','Harina mínima'],['🍯','Azúcar morena']],
+      note: '🔥 El secreto de nuestro brownie es el chocolate de verdad y no hornear de más. La humedad del centro es intencional — es lo mejor.'
+    },
+
+    // ── CERVEZAS & SPIRITS ──
+    'Stella Artois': {
+      price: '$9.000', icon: '🍺', badge: 'Importada', badgeClass: 'badge-beer',
+      img: '',
+      desc: 'La lager belga que se convirtió en símbolo de elegancia casual. Dorada, limpia, con una espuma densa y persistente. Stella Artois tiene un carácter suavemente amargo y un acabado refrescante que la hace perfecta para cualquier momento del día.',
+      ingredients: [['🌾','Cebada seleccionada'],['🍃','Lúpulo Saaz'],['💧','Agua filtrada'],['🌡️','Fermentada en frío']],
+      note: '🏆 Stella Artois ha ganado más de 40 premios internacionales. En Ambú la servimos muy fría y en vaso a 4°C.'
+    },
+    'Corona': {
+      price: '$9.000', icon: '🍺', badge: 'Importada', badgeClass: 'badge-beer',
+      img: '',
+      desc: 'La cerveza de la playa que llegó a las montañas. Ligera, cristalina y refrescante, Corona se bebe con un gajo de limón exprimido en el cuello de la botella — ese ritual que la hace inconfundible y que nosotros respetamos fielmente.',
+      ingredients: [['🌾','Cebada y maíz'],['🍃','Lúpulo suave'],['🍋','+ Limón (recomendado)'],['🏝️','Spirit veranero']],
+      note: '🍋 El truco: introduce el limón dentro de la botella, pon el dedo y voltea. La cerveza se mezcla sola — sin cuchara.'
+    },
+    'BBC': {
+      price: '$9.000', icon: '🍺', badge: 'Nacional', badgeClass: 'badge-beer',
+      img: '',
+      desc: 'Bogotá Beer Company, el orgullo craftero de Colombia. BBC nació para demostrar que los colombianos podemos hacer cervezas de carácter. Cada variedad tiene personalidad propia — pregunta qué BBC tenemos fría hoy.',
+      ingredients: [['🌾','Maltas especiales'],['🌺','Lúpulos aromáticos'],['🇨🇴','Hecha en Colombia'],['🏭','Proceso artesanal']],
+      note: '🇨🇴 BBC fue una de las primeras cervezas artesanales colombianas. Apoyar BBC es apoyar la industria craft nacional.'
+    },
+    'Artesanal Laboyana': {
+      price: '$9.000', icon: '🍻', badge: 'Local ✦', badgeClass: 'badge-beer',
+      img: '',
+      desc: 'Nuestra cerveza más especial y la más cercana al corazón. Artesanal Laboyana es hija de la región del Huila — elaborada con agua de las montañas y con ese carácter único que solo el terroir local puede dar. Pedir esta es apoyar lo local de verdad.',
+      ingredients: [['💧','Agua de las montañas del Huila'],['🌾','Maltas locales'],['🌿','Hierbas regionales'],['❤️','Hecha con orgullo regional']],
+      note: '🏔️ Cada lote de Laboyana es diferente — el agua de las montañas varía con las estaciones y eso se nota. Estás bebiendo el Huila en una botella.'
+    },
+    'Club Colombia': {
+      price: '$9.000', icon: '🍺', badge: 'Nacional', badgeClass: 'badge-beer',
+      img: '',
+      desc: 'La cerveza con más historia del país. Club Colombia lleva décadas siendo la compañera de las buenas mesas colombianas — lager suave, equilibrada y de calidad consistente que nunca decepciona. Un clásico que merece su lugar en la mesa.',
+      ingredients: [['🌾','Cebada premium'],['🍃','Lúpulo selecto'],['💧','Agua purificada'],['🇨🇴','Orgullo colombiano']],
+      note: '🇨🇴 Club Colombia fue la primera cerveza premium colombiana. Es la cerveza de las celebraciones, los domingos y los encuentros que importan.'
+    },
+    'Smirnoff': {
+      price: '$13.000', icon: '🥃', badge: 'Spirits', badgeClass: 'badge-alcohol',
+      img: '',
+      desc: 'Vodka triple destilado y filtrado en carbón activo para lograr una pureza cristalina. Smirnoff se disfruta solo sobre hielo para apreciar su suavidad, o como base de tu combinado favorito. Pregúntale al barista qué mezclas tienen disponibles.',
+      ingredients: [['🌾','Destilado de grano'],['🔄','Triple destilación'],['⬛','Filtrado en carbón activo'],['💧','Agua ultra-pura']],
+      note: '🍹 El barista puede combinarlo con lo que tengas en el menú — Red Bull, jugo, tónica o simplemente con hielo y limón.'
+    },
+  };
+
+  // ════════════════════════════════════════
+  // MODAL LOGIC
+  // ════════════════════════════════════════
+  const backdrop  = document.getElementById('modalBackdrop');
+  const sheet     = document.getElementById('modalSheet');
+  const closeBtn  = document.getElementById('modalClose');
+
+  function openModal(productName) {
+    const p = PRODUCTS[productName];
+    if (!p) return;
+
+    // Fill in content
+    document.getElementById('modalName').textContent    = productName;
+    document.getElementById('modalPrice').textContent   = p.price;
+    document.getElementById('modalDesc').textContent    = p.desc;
+    document.getElementById('modalNote').textContent    = p.note || '';
+
+    // Badge
+    const badge = document.getElementById('modalBadge');
+    badge.textContent  = p.badge;
+    badge.className    = 'modal-img-badge ' + (p.badgeClass || '');
+
+    // Ingredients
+    const ingWrap = document.getElementById('modalIngredients');
+    ingWrap.innerHTML = p.ingredients.map(([icon, label]) =>
+      `<div class="modal-ingredient-pill"><span>${icon}</span>${label}</div>`
+    ).join('');
+
+    // Note visibility
+    const noteEl = document.getElementById('modalNote');
+    noteEl.style.display = p.note ? 'block' : 'none';
+
+    // Image
+    const img         = document.getElementById('modalImg');
+    const placeholder = document.getElementById('modalPlaceholder');
+    const phIcon      = document.getElementById('modalPlaceholderIcon');
+    phIcon.textContent = p.icon;
+
+    img.classList.remove('loaded');
+    if (p.img && p.img.trim() !== '') {
+      placeholder.classList.add('hidden');
+      img.src = p.img;
+      img.onload  = () => img.classList.add('loaded');
+      img.onerror = () => { img.style.display='none'; placeholder.classList.remove('hidden'); };
+    } else {
+      placeholder.classList.remove('hidden');
+      img.src = '';
+    }
+
+    // Open
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    sheet.scrollTop = 0;
+
+    // scroll modal-body to top
+    const body = sheet.querySelector('.modal-body');
+    if (body) body.scrollTop = 0;
+  }
+
+  function closeModal() {
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // Attach to all drink cards
+  document.querySelectorAll('.drink-card').forEach(card => {
+    const nameEl = card.querySelector('.drink-name');
+    if (!nameEl) return;
+    const name = nameEl.textContent.trim();
+    if (PRODUCTS[name]) {
+      card.addEventListener('click', () => openModal(name));
+    }
+  });
+
+  // ── Swipe down to close ──
+  let touchStartY = 0;
+  sheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  sheet.addEventListener('touchmove', e => {
+    const delta = e.touches[0].clientY - touchStartY;
+    if (delta > 60 && sheet.querySelector('.modal-body').scrollTop === 0) {
+      closeModal();
+    }
+  }, { passive: true });
+
+  // ── IMAGE LOADING (list cards) ──
+  document.querySelectorAll('.drink-img-wrap img').forEach(img => {
+    const src = img.getAttribute('data-src');
+    const placeholder = img.previousElementSibling;
+    if (src && src.trim() !== '') {
+      img.src = src;
+      img.onload = () => {
+        img.classList.add('loaded');
+        if (placeholder) placeholder.classList.add('hidden');
+      };
+      img.onerror = () => { img.style.display = 'none'; };
+    }
+  });
+
+  // ── PARTICLES ──
+  (function() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 2;
+      p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;--dur:${Math.random()*10+6}s;--delay:${Math.random()*8}s;opacity:0;`;
+      container.appendChild(p);
+    }
+  })();
+
+  // ── SCROLL REVEAL ──
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); revealObserver.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ── CARD STAGGER ──
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.drink-card').forEach((card, idx) => {
+          setTimeout(() => { card.classList.add('visible'); card.style.animationDelay = '0s'; }, idx * 80);
+        });
+        cardObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.cards-grid').forEach(grid => cardObserver.observe(grid));
+
+  // ── BACK TO TOP + NAV ──
+  const backBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    backBtn.classList.toggle('visible', window.scrollY > 400);
+    const sections = ['calientes','frias','acomp','cervezas'];
+    let current = sections[0];
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 200) current = id;
+    });
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.section === current);
+    });
+  }, { passive: true });
+
+  function scrollToSection(id, tab) {
+    const el = document.getElementById(id);
+    if (el) { const navH = document.getElementById('nav').offsetHeight; window.scrollTo({ top: el.offsetTop - navH - 8, behavior: 'smooth' }); }
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  }
+</script>
+</body>
+</html>
